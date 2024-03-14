@@ -45,7 +45,7 @@ def test_create_with_list_values(check, faker, simple_factory_model):
     expected_df = SubFactorySimpleModelFactory.create(
         first_name=df_simple["first_name"].to_list(),
         last_name=df_simple["last_name"].to_list(),
-        date=df_simple["date"].to_list()
+        date=df_simple["date"].to_list(),
     )
     check.is_true(df_simple.equals(expected_df))
 
@@ -66,6 +66,6 @@ def test_create_sub_df_with_na(check, faker, simple_factory_model):
         perc_na=0.2,
         first_name=df_simple["first_name"].to_list(),
         last_name=df_simple["last_name"].to_list(),
-        date=df_simple["date"].to_list()
+        date=df_simple["date"].to_list(),
     )
     check.is_true(df.isnull().any().any())

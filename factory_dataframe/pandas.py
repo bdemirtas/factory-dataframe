@@ -22,5 +22,4 @@ class PandasDataFrameFactory(Factory):
                 [True, False], size=df.shape, p=[perc_na, 1 - perc_na]
             )
             df = df.mask(mask)
-
         return df

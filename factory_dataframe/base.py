@@ -59,10 +59,11 @@ class BaseFactory:
         cls,
         size=10,
         perc_na=None,
-        perc_row_na=None,
-        perc_col_na=None,
+        columns=None,
         **kwargs,
     ):
+        if columns is None:
+            columns = []
         cls.columns_name = list(cls._options.columns)
         cls.data = {}
 
@@ -72,9 +73,7 @@ class BaseFactory:
             else:
                 cls.data[attr] = [column_generator() for _ in range(size)]
 
-        return cls._create(
-            size, perc_na, perc_row_na=None, perc_col_na=None, **kwargs
-        )
+        return cls._create(size, perc_na, columns, **kwargs)
 
     @classmethod
     @abstractmethod
@@ -82,8 +81,7 @@ class BaseFactory:
         cls,
         size,
         perc_na,
-        perc_row_na=None,
-        perc_col_na=None,
+        columns,
         **kwargs,
     ):
         raise NotImplementedError

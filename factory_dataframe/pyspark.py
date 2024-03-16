@@ -18,14 +18,20 @@ class PySparkDataFrameFactory(Factory):
         cls,
         size=10,
         perc_na=None,
+        columns=None,
         **kwargs,
     ):
         df = pd.DataFrame(columns=cls.columns_name, data=cls.data)
         if perc_na:
-            mask = np.random.choice(
-                [True, False], size=df.shape, p=[perc_na, 1 - perc_na]
-            )
-            df = df.mask(mask)
+            if columns and perc_na:
+                for col in columns:
+                    df[col] = df[col].sample(frac=1 - perc_na)
+            else:
+                mask = np.random.choice(
+                    [True, False], size=df.shape, p=[perc_na, 1 - perc_na]
+                )
+                df = df.mask(mask)
+            df = df.where((pd.notnull(df)), None)
 
         if all(not v for v in cls.data.values()):
             return spark.createDataFrame([], StructType([]))

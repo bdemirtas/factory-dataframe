@@ -13,7 +13,6 @@ def test_create_dataframe(check, simple_factory_model, nbrow):
 
 def test_create_with_random_na(check, simple_factory_model):
     df = simple_factory_model.create(perc_na=0.2).toPandas()
-    df = df.replace("NaN", np.nan)
     check.is_true(df.isnull().any().any())
 
 
@@ -22,16 +21,11 @@ def test_create_with_zero_random_na(check, simple_factory_model):
     check.is_false(df.isnull().any().any())
 
 
-def test_create_with_random_row_na(check, simple_factory_model):
-    df = simple_factory_model.create(perc_row_na=0.2).toPandas()
-    df = df.replace("NaN", np.nan)
-    check.is_false(df.isnull().any().any())
-
-
-def test_create_with_random_col_na(check, simple_factory_model):
-    df = simple_factory_model.create(perc_col_na=0.2).toPandas()
-    df = df.replace("NaN", np.nan)
-    check.is_false(df.isnull().any().any())
+def test_create_with_random_column_na(check, simple_factory_model):
+    df = simple_factory_model.create(
+        columns=["last_name"], perc_na=0.2
+    ).toPandas()
+    check.is_true(df["last_name"].isnull().any())
 
 
 def test_create_with_list_values(check, faker, simple_factory_model):
